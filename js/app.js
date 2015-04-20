@@ -1,6 +1,6 @@
 (function() {
   const headerHeight = 50;
-  const viewPortMultiplier = 5;
+  const viewPortMultiplier = 3;
 
   const listSize = 1042;
   var content = [];
@@ -19,7 +19,7 @@
     var template = document.getElementById('template');
     var itemHeight = template.offsetHeight;
     var maxItemCount = Math.ceil(window.innerHeight *
-                                 (viewPortMultiplier + 2) /
+                                 (viewPortMultiplier + 1.5) /
                                  itemHeight);
 
     template.remove();
@@ -30,7 +30,12 @@
     var editMode = false;
     var listContainer = document.querySelector('section');
     var list = document.querySelector('ul');
+
+    var lastScrollEventAt = Date.now();
+    var previousEventAt = Date.now();
+    var previousTopPosition = 0;
     var topPosition = 0;
+    var estimatedTopPosition = 0;
     var forward = true;
 
     function populateItem(item, index) {
@@ -53,6 +58,7 @@
     maestro.mutation(() => {
       updateListSize();
       placeItems();
+      updateViewportItems();
       updateHeader();
     });
 
@@ -71,15 +77,16 @@
     function updateVisibleItems(multiplier) {
       var scrollPortHeight = window.innerHeight - headerHeight;
       var displayPortPrerender = multiplier * scrollPortHeight;
+      var position = estimatedTopPosition;
 
       var startIndex = Math.max(0,
-        Math.floor((topPosition -
-                    (forward ? scrollPortHeight : displayPortPrerender)) /
+        Math.floor((position -
+                    (forward ? (scrollPortHeight / 2) : displayPortPrerender)) /
                     itemHeight));
 
       var endIndex = Math.min(content.length,
-        Math.ceil((topPosition + scrollPortHeight +
-                   (forward ? displayPortPrerender : scrollPortHeight)) /
+        Math.ceil((position + scrollPortHeight +
+                   (forward ? displayPortPrerender : (scrollPortHeight / 2))) /
                    itemHeight));
 
       var recyclableItems = [];
@@ -130,17 +137,53 @@
       }
     }
 
-    listContainer.addEventListener('scroll', function(evt) {
-      var previousTopPosition = topPosition;
-      topPosition = listContainer.scrollTop;
+    function updateViewportItems() {
+      return maestro.mutation(() => {
+        var startIndex = Math.max(0, Math.floor(topPosition / itemHeight) - 1);
+        var endIndex = Math.min(content.length,
+                               ((topPosition + window.innerHeight - headerHeight) /
+                               itemHeight) + 1);
 
-      if ((topPosition - previousTopPosition) < 0) {
-        forward = false;
-      } else {
-        forward = true;
-      }
+        for (var i in items) {
+          var item = items[i];
+          item.classList.toggle('viewport', i >= startIndex && i <= endIndex);
+        }
+      });
+    }
+
+    //window.addEventListener('scrollstart', function() {
+      //for (var i in items) {
+        //var item = items[i];
+        //item.classList.remove('viewport');
+      //}
+    //});
+
+    window.addEventListener('scrollend', updateViewportItems);
+
+    listContainer.addEventListener('scroll', function(evt) {
+      previousEventAt = lastScrollEventAt;
+      lastScrollEventAt = evt.timeStamp || Date.now();
 
       maestro.live(() => {
+        previousTopPosition = topPosition;
+
+        topPosition = listContainer.scrollTop;
+        estimatedTopPosition = topPosition;
+
+        var speed = (topPosition - previousTopPosition) /
+                    (lastScrollEventAt - previousEventAt)
+        var delay = Date.now() - lastScrollEventAt;
+        var offset = speed * delay * 2;
+        if (offset) {
+          estimatedTopPosition = topPosition + offset;
+        }
+
+        if ((topPosition - previousTopPosition) < 0) {
+          forward = false;
+        } else {
+          forward = true;
+        }
+
         placeItems();
         updateNewIndicator();
       });
@@ -164,10 +207,12 @@
         return;
       }
 
-      pushDown()
+      updateViewportItems()
+        .then(pushDown)
         .then(insertOnTop.bind(null, false))
         .then(cleanInlineStyles)
-        .then(slideIn);
+        .then(updateViewportItems)
+        .then(slideIn)
 
     }, 15000);
 
@@ -267,7 +312,9 @@
     function changeEditMode(text, toggleEditClass) {
       var update = updateText.bind(null, text);
 
-      Promise.all([toggleTransitioning(), toggleEditClass()])
+      toggleTransitioning()
+        .then(updateViewportItems)
+        .then(toggleEditClass)
         .then(update)
         .then(toggleTransitioning);
     }
@@ -314,7 +361,7 @@
     function resetTransform(item) {
       var position = parseInt(item.dataset.position);
       if (item.dataset.toSlide) {
-        item.style.transform = 'translate(-100%, ' + position + 'px)';
+        item.style.transform = 'translate(-99.9%, ' + position + 'px)';
       } else {
         item.style.transform = 'translate(0, ' + position + 'px)';
       }
