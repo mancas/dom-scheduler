@@ -1,0 +1,3 @@
+[submodule "gaia-dialog"]
+	path = gaia-dialog
+	url = https://github.com/mancas/dom-scheduler-dialogs
