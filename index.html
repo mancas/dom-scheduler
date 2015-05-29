@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="css/ul.css">
     <link rel="stylesheet" href="css/app.css">
 
+    <!-- GAIA DIALOG -->
+    <link rel="import" type="text/html" href="gaia-dialog/src/gaia-dialog.html">
+    <link rel="stylesheet" type="text/css" href="gaia-dialog/bower_components/base/base.css">
+    <link rel="stylesheet" type="text/css" href="gaia-dialog/bower_components/gaia-theme/gaia-theme.css">
+    <link rel="stylesheet" type="text/css" href="gaia-dialog/bower_components/gaia-fonts/style.css">
+    <link rel="stylesheet" type="text/css" href="gaia-dialog/bower_components/gaia-icons/gaia-icons.css">
+
+    <script type="text/javascript" src="gaia-dialog/js/lazy_loader.js"></script>
+    <script src="gaia-dialog/bower_components/gaia-theme/lib/gaia-theme-selector.js"></script>
+    <script src="gaia-dialog/bower_components/pressed/pressed.js"></script>
+    <script src="gaia-dialog/bower_components/gaia-icons/gaia-icons.js"></script>
+    <script src="gaia-dialog/bower_components/gaia-button/gaia-button.js"></script>
+    <script src="gaia-dialog/bower_components/gaia-text-input/gaia-text-input.js"></script>
+    <!--<script src="gaia-dialog/gaia-dialog.js"></script>
+    <script src="gaia-dialog/gaia-dialog-alert.js"></script>
+    <script src="gaia-dialog/gaia-dialog-confirm.js"></script>
+    <script src="gaia-dialog/gaia-dialog-prompt.js"></script>
+    <script src="gaia-dialog/gaia-dialog-action.js"></script>
+    <script src="gaia-dialog/gaia-dialog-select.js"></script>
+    <script src="gaia-dialog/gaia-dialog-menu.js"></script>-->
+
     <script type="text/javascript" src="lib/dom-scheduler.js" async></script>
     <script type="text/javascript" src="lib/scheduled-list.js" async></script>
 
@@ -27,7 +48,7 @@
     </button>
     <section>
       <ul>
-        <li
+        <li data-for="gaia-dialog-alert"
           ><h3> </h3
           ><p> </p
           ><div class="overlay"
@@ -35,6 +56,8 @@
           ></li>
       </ul>
     </section>
+
+    <gaia-dialog-alert>List item clicked!</gaia-dialog-alert>
   </body>
 
 </html>

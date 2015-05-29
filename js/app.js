@@ -80,5 +80,24 @@
         button.classList.toggle('transitioning');
       }, button, 'transitionend', 350, true /* feedback */);
     }
+
+    var dependencies = ['gaia-dialog/gaia-dialog.js',
+      'gaia-dialog/gaia-dialog-alert.js',
+      'gaia-dialog/gaia-dialog-confirm.js', 'gaia-dialog/gaia-dialog-prompt.js',
+      'gaia-dialog/gaia-dialog-action.js', 'gaia-dialog/gaia-dialog-select.js',
+      'gaia-dialog/gaia-dialog-menu.js'];
+
+    function loadDependecies() {
+      LazyLoader.load(dependencies, () => {
+        var gaiaDialogElements = document.querySelectorAll('gaia-dialog,' +
+            'gaia-dialog-alert, gaia-dialog-confirm, gaia-dialog-prompt,' +
+            'gaia-dialog-action, gaia-dialog-select, gaia-dialog-menu');
+        Array.prototype.forEach.call(gaiaDialogElements, elm => {
+            elm.attachBehavior(maestro);
+        });
+      });
+    }
+
+    loadDependecies();
   });
 })();
