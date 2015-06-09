@@ -72,10 +72,8 @@
 
     var button = document.querySelector('button');
     button.addEventListener('touchend', function() {
-      toggleTransitioning()
-        .then(list.toggleEditMode.bind(list))
-        .then(updateText)
-        .then(toggleTransitioning);
+      list.toggleEditMode(list)
+        .then(updateText);
     });
 
     function updateText(text) {
@@ -84,20 +82,19 @@
       });
     }
 
-    function toggleTransitioning() {
-      return maestro.feedback(function() {
-        button.classList.toggle('transitioning');
-      }, button, 'transitionend');
-    }
-
     var dependencies = ['gaia-dialog/gaia-dialog.js',
-      'gaia-dialog/gaia-dialog-alert.js'];
+      'gaia-dialog/gaia-dialog-alert.js', 'gaia-header/gaia-header.js'];
 
     function loadDependecies() {
       LazyLoader.load(dependencies, () => {
         var gaiaDialogElements = document.querySelectorAll('gaia-dialog-alert');
         Array.prototype.forEach.call(gaiaDialogElements, elm => {
-            elm.attachBehavior(maestro);
+          elm.attachBehavior(maestro);
+        });
+
+        var gaiaHeadersElements = document.querySelectorAll('gaia-header');
+        Array.prototype.forEach.call(gaiaHeadersElements, elm => {
+          elm.attachBehavior(maestro);
         });
       });
     }

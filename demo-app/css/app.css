@@ -80,41 +80,6 @@ h1 {
   }
 }
 
-button {
-  position: absolute;
-  display: block;
-  top: 0;
-  right: 0;
-  height: 50px;
-
-  border: 0;
-  border-radius: 0;
-  outline: 0;
-  background: none;
-  padding: 0 15px;
-
-  text-align: center;
-  text-decoration: underline;
-  font-size: 14px;
-  color: #ffffff;
-  -moz-appearance: none;
-
-  opacity: 1;
-  transition: transform 0.1s linear,
-              opacity 0.1s linear;
-  -webkit-transition: -webkit-transform 0.1s linear,
-                      opacity 0.1s linear;
-
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-button.transitioning {
-  opacity: 0.5;
-  transform: scale(0.6, 0.6);
-  -webkit-transform: scale(0.6, 0.6);
-  pointer-events: none;
-}
-
 ul {
   position: absolute;
   top: 0;

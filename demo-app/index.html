@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
 
-    <link rel="stylesheet" href="css/h1.css">
     <link rel="stylesheet" href="css/ul.css">
     <link rel="stylesheet" href="css/app.css">
 
@@ -13,10 +12,14 @@
     <link rel="stylesheet" type="text/css" href="gaia-dialog/bower_components/base/base.css">
     <link rel="stylesheet" type="text/css" href="gaia-dialog/bower_components/gaia-theme/gaia-theme.css">
     <link rel="stylesheet" type="text/css" href="gaia-dialog/bower_components/gaia-fonts/style.css">
+    <script src="gaia-header/bower_components/gaia-icons/gaia-icons.js"></script>
+    <script src="gaia-header/bower_components/gaia-component/gaia-component.js"></script>
+    <script src="gaia-header/bower_components/font-fit/font-fit.js"></script>
 
     <script type="text/javascript" src="gaia-dialog/js/lazy_loader.js"></script>
     <!--<script src="gaia-dialog/gaia-dialog.js"></script>
-    <script src="gaia-dialog/gaia-dialog-alert.js"></script>-->
+    <script src="gaia-dialog/gaia-dialog-alert.js"></script>
+    <script src="gaia-header/gaia-header.js"></script>-->
 
     <script type="text/javascript" src="lib/dom-scheduler.js" async></script>
     <script type="text/javascript" src="lib/scheduled-list.js" async></script>
@@ -27,14 +30,19 @@
     <title>Dom Scheduler Demo</title>
   </head>
 
-  <body>
-    <h1>
+  <body class="theme-communications">
+    <!--<h1>
       Main List
     </h1>
-    <div id="h1-after"></div>
+    
     <button>
       Edit
-    </button>
+    </button>-->
+    <gaia-header>
+      <h1>Main List</h1>
+      <button>Edit</button>
+    </gaia-header>
+    <div id="h1-after"></div>
     <section>
       <ul>
         <li
